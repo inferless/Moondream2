@@ -1,50 +1,25 @@
-import torch
-from diffusers import (
-    StableDiffusionXLPipeline, 
-    EulerAncestralDiscreteScheduler,
-    AutoencoderKL
-)
-from io import BytesIO
-import base64
-import os
-
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from PIL import Image
 
 class InferlessPythonModel:
     def initialize(self):
-        # Load VAE component
-        self.vae = AutoencoderKL.from_pretrained(
-            "madebyollin/sdxl-vae-fp16-fix", 
-            torch_dtype=torch.float16
-        )
-        
-        # Configure the pipeline
-        self.pipe = StableDiffusionXLPipeline.from_pretrained(
-            "cagliostrolab/animagine-xl-3.0", 
-            vae=self.vae,
-            torch_dtype=torch.float16, 
-            use_safetensors=True, 
-        )
-        self.pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(self.pipe.scheduler.config)
-        self.pipe.to('cuda')
+        model_id = "vikhyatk/moondream2"
+        revision = "2024-03-06"
+        self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, revision=revision)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
 
+    def download_image(self,image_url):
+        file_name = f'image.{image_url.split(".")[-1]}'
+        urllib.request.urlretrieve(image_url, file_name)
+        return file_name
 
-    def infer(self, inputs):
-        prompt = inputs["prompt"]
-        negative_prompt = inputs["negative_prompt"]
-        
-        image = self.pipe(
-            prompt, 
-            negative_prompt=negative_prompt, 
-            width=832,
-            height=1216,
-            guidance_scale=7,
-            num_inference_steps=28
-        ).images[0]
-
-        buff = BytesIO()
-        image.save(buff, format="JPEG")
-        img_str = base64.b64encode(buff.getvalue()).decode()
-        return { "generated_image_base64" : img_str }
+    def infer(self,inputs):
+        image_url = inputs["image_url"]
+        file_name = self.download_image(image_url)
+        image = Image.open(file_name)
+        enc_image = self.model.encode_image(image)
+        generated_text = self.model.answer_question(enc_image, "Describe this image.", self.tokenizer)
+        return { "generated_answer" : generated_text }
         
     def finalize(self):
         self.pipe = None
