@@ -1,5 +1,6 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from PIL import Image
+import urllib
 
 class InferlessPythonModel:
     def initialize(self):
