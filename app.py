@@ -16,10 +16,11 @@ class InferlessPythonModel:
 
     def infer(self,inputs):
         image_url = inputs["image_url"]
+        question = inputs["question"]
         file_name = self.download_image(image_url)
         image = Image.open(file_name)
         enc_image = self.model.encode_image(image)
-        generated_text = self.model.answer_question(enc_image, "Describe this image.", self.tokenizer)
+        generated_text = self.model.answer_question(enc_image, question, self.tokenizer)
         return { "generated_answer" : generated_text }
         
     def finalize(self):
