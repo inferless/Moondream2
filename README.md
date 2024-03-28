@@ -1,5 +1,6 @@
 # Moondream2
 Moondream2 is a small vision language model designed to run efficiently on edge devices.  It comprises 1.86 billion parameters, initially weighted with data from SigLIP and Phi-1.5. Primarily, Moondream excels in responding to image-related queries, generating captions, and performing various other vision language tasks.
+
 ---
 ## Prerequisites
 - **Git**. You would need git installed on your system if you wish to customize the repo after forking.
