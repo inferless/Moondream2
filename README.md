@@ -1,6 +1,5 @@
-# Animagine-xl-3.0
-This is a animagine-xl-3.0 model template you can use to import your model on Inferless Platform. Animagine XL 3.0, the advanced open-source anime text-to-image model. Building on the foundation of Animagine XL 2.0 and powered by Stable Diffusion XL, this latest version offers superior image generation. It features enhancements in hand anatomy, efficient tag ordering, and a deeper understanding of anime concepts.
-
+# Moondream2
+Moondream2 is a small vision language model designed to run efficiently on edge devices.  It comprises 1.86 billion parameters, initially weighted with data from SigLIP and Phi-1.5. Primarily, Moondream excels in responding to image-related queries, generating captions, and performing various other vision language tasks.
 ---
 ## Prerequisites
 - **Git**. You would need git installed on your system if you wish to customize the repo after forking.
@@ -44,9 +43,19 @@ curl --location '<your_inference_url>' \
               "inputs": [
                 {
                   "data": [
-                    "1girl, arima kana, oshi no ko, solo, upper body, v, smile, looking at viewer, outdoors, night"
+                    "https://file-examples.com/storage/fe1b802e1565fe057a1d758/2017/10/file_example_JPG_100kB.jpg"
                   ],
-                  "name": "prompt",
+                  "name": "image_url",
+                  "shape": [
+                    1
+                  ],
+                  "datatype": "BYTES"
+                },
+               {
+                  "data": [
+                    "Describe this image."
+                  ],
+                  "name": "question",
                   "shape": [
                     1
                   ],
