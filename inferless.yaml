@@ -17,7 +17,7 @@ configuration:
   custom_volume_id: ''
   custom_volume_name: ''
 
-  gpu_type: T4
+  gpu_type: A100
   inference_time: '180'
   is_dedicated: true
   is_serverless: false
