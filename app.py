@@ -6,7 +6,7 @@ class InferlessPythonModel:
     def initialize(self):
         model_id = "vikhyatk/moondream2"
         revision = "2024-03-06"
-        self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, revision=revision)
+        self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, revision=revision).to("cuda")
         self.tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
 
     def download_image(self,image_url):
@@ -22,6 +22,6 @@ class InferlessPythonModel:
         enc_image = self.model.encode_image(image)
         generated_text = self.model.answer_question(enc_image, question, self.tokenizer)
         return { "generated_answer" : generated_text }
-        
+
     def finalize(self):
         self.pipe = None
