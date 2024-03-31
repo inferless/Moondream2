@@ -44,7 +44,7 @@ curl --location '<your_inference_url>' \
               "inputs": [
                 {
                   "data": [
-                    "https://file-examples.com/storage/fe1b802e1565fe057a1d758/2017/10/file_example_JPG_100kB.jpg"
+                    "https://github.com/rbgo404/Files/raw/main/moondream.jpg"
                   ],
                   "name": "image_url",
                   "shape": [
